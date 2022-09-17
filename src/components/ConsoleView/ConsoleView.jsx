@@ -9,13 +9,8 @@ const ConsoleCommand = ({ dir, command }) => {
 }
 
 const ConsoleForm = ({ currentDirPath, onFormSubmit, onInputChange, inputRef, inputValue }) => {
-
-  const onBlur = (event) => {
-    event.target.focus()
-  }
-
   return (<form onSubmit={onFormSubmit}>
-    {currentDirPath}><input ref={inputRef} onBlur={onBlur} autoFocus={true} onChange={onInputChange}
+    {currentDirPath}><input ref={inputRef} autoFocus={true} onChange={onInputChange}
                             type='text'
                             value={inputValue}/>
   </form>)
@@ -35,7 +30,7 @@ const ConsoleView = () => {
     // Moving cursor to the end
     inputRef.current.selectionStart = inputRef.current.value.length;
     inputRef.current.selectionEnd = inputRef.current.value.length;
-  }, [inputValue]);
+  }, [currentCommandRef.current]);
 
   const keyDownHandler = useCallback((e) => {
     const keyEvent = {
@@ -69,12 +64,10 @@ const ConsoleView = () => {
 
   useEventListener("keydown", keyDownHandler);
 
-
   const onSubmit = async (event) => {
     event.preventDefault();
     const additionalConsoleContents = [<ConsoleCommand dir={currentDir} command={inputValue}/>]
-    const commandElements = inputValue.split(" ");
-    await commandHandler(currentDirId, commandElements, additionalConsoleContents)
+    await commandHandler(currentDirId, inputValue, additionalConsoleContents)
     setConsoleContents(prevState => {
       return [...prevState, ...additionalConsoleContents];
     });
@@ -94,7 +87,7 @@ const ConsoleView = () => {
     }
   }
 
-  return (<div className={'console-view'}>
+  return (<div className={'console-view'} onClick={onClick}>
     {consoleContents.map((command, index) => {
       return <div key={index}>{command}</div>
     })}
