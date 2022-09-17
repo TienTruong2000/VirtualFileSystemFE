@@ -3,7 +3,7 @@ import { DATE_FORMAT } from "../constants/appConstants";
 import React from "react";
 import { createDirectory, getDirectoryById } from "./apiServices/directoryService";
 import { supportedCommand } from "../constants/commandDictionary";
-import { createTextFile } from "./apiServices/textFileService";
+import { createTextFile, getTextFileByPath } from "./apiServices/textFileService";
 
 const lsCommandHandler = async (currentDirId) => {
   const fileType = {
@@ -15,7 +15,7 @@ const lsCommandHandler = async (currentDirId) => {
     <pre>Size: {data.size}</pre>
     {data.children?.map(child => {
       return <pre key={child.id}>
-              {moment(child.createdAt).format(DATE_FORMAT)}   {fileType[child.type]}   {child.size}   {child.name}
+              {moment(child.createdAt).format(DATE_FORMAT)} {fileType[child.type]} {child.size} {child.name}
             </pre>
     })
     }
@@ -39,6 +39,16 @@ const crCommandHandler = async (commandElements) => {
   data = res.data;
   return (<span>Create file with name '{data.name}' successfully.</span>);
 
+}
+
+const catCommandHandler = async (commandElements) => {
+  const path = commandElements.slice(1).join(" ");
+  if (path === undefined) {
+    return (<span>The syntax of the command is incorrect. Type 'help cr' command usage.</span>);
+  }
+  const res = await getTextFileByPath(path);
+  const data = res.data;
+  return (<span>{data.content}</span>);
 }
 
 const parseCommand = (commandValue) => {
@@ -78,7 +88,6 @@ const parseCommand = (commandValue) => {
   if (keyword.trim().length !== 0) {
     result.push(keyword);
   }
-  debugger;
   return result;
 }
 
@@ -87,18 +96,21 @@ const commandHandler = async (currentDirId, commandValue, additionalConsoleConte
   if (commandElements === null || commandElements.length === 0) return;
   const command = commandElements[0];
   try {
-    if (!Object.keys(supportedCommand).includes(command)) {
-      additionalConsoleContents.push(<span>'{command}' is not recognized as a valid command. Type 'help' to show list of commands.</span>);
-      return;
+    let result;
+    switch (command) {
+      case supportedCommand.ls:
+        result = await lsCommandHandler(currentDirId);
+        break;
+      case supportedCommand.cr:
+        result = await crCommandHandler(commandElements);
+        break;
+      case supportedCommand.cat:
+        result = await catCommandHandler(commandElements);
+        break;
+      default:
+        result = <span>'{command}' is not recognized as a valid command. Type 'help' to show list of commands.</span>;
     }
-    let result = "";
-    if (command === supportedCommand.ls) {
-      result = await lsCommandHandler(currentDirId)
-    } else if (command === supportedCommand.cr) {
-      result = await crCommandHandler(commandElements);
-    } else if (command === "cd") {
 
-    }
     additionalConsoleContents.push(result);
 
   } catch (e) {

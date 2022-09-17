@@ -27,6 +27,7 @@ export const commandDictionary = {
 
 export const supportedCommand = {
   ls: 'ls',
-  cr: 'cr'
+  cr: 'cr',
+  cat: 'cat'
 }
 
