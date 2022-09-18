@@ -2,9 +2,11 @@ import moment from "moment/moment";
 import { DATE_FORMAT } from "../constants/appConstants";
 import React from "react";
 import { createDirectory, getDirectoryByPath } from "./apiServices/directoryService";
-import { supportedCommand } from "../constants/commandDictionary";
+import { commandDictionary, supportedCommand } from "../constants/commandDictionary";
 import { createTextFile, getTextFileByPath } from "./apiServices/textFileService";
 import { moveFile, removeFileFromPath } from "./apiServices/fileService";
+import CommandList from "../components/CommandList/CommandList";
+import CommandHelp from "../components/CommandHelp/CommandHelp";
 
 const lsCommandHandler = async (commandElements) => {
   const fileType = {
@@ -97,6 +99,18 @@ const rmCommandHandler = async (commandElement) => {
   );
 }
 
+const helpCommandHandler = async (commandElement) => {
+  const helpCommand = commandElement[1];
+  if (helpCommand === undefined)
+    return <CommandList/>;
+  const commandDefinition = commandDictionary[helpCommand];
+  if (commandDefinition === undefined)
+    return <span>This command is not supported by the help utility.</span>
+  return (
+    <CommandHelp commandDefinition={commandDefinition}/>
+  )
+}
+
 const parseCommand = (commandValue) => {
   const command = commandValue.trim();
   const result = [];
@@ -175,6 +189,9 @@ const commandHandler = async (currentDirId, commandValue, additionalConsoleConte
         break;
       case supportedCommand.rm:
         result = await rmCommandHandler(commandElements);
+        break;
+      case supportedCommand.help:
+        result = await helpCommandHandler(commandElements);
         break;
       default:
         result = <span>'{command}' is not recognized as a valid command. Type 'help' to show list of commands.</span>;
