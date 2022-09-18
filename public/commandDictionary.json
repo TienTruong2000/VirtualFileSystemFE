@@ -3,12 +3,7 @@
     "name": "cr",
     "shortDescription": "Make a new file or a new directory",
     "description": "Create a new file (if [data] is specified, otherwise create a new folder) at the specified <path>",
-    "options": [
-      {
-        "value": "p",
-        "description": "create the missing parent folders"
-      }
-    ],
+    "options": [],
     "arguments": [
       {
         "name": "path",
