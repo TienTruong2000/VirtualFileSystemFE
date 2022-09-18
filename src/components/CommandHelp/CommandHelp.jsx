@@ -19,7 +19,9 @@ const CommandHelp = ({ commandDefinition }) => {
           <pre>None</pre> : commandDefinition.options.map(option => {
             return (<tr>
               <td style={{ color: '#008424' }}>-{option.value}</td>
-              <td> {option.description}</td>
+              <td>
+                <pre style={{ marginLeft: '1rem' }}>{option.description}</pre>
+              </td>
             </tr>)
           })}
         </tbody>

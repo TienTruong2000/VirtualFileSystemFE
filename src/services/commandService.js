@@ -79,8 +79,15 @@ const rmCommandHandler = async (commandElement) => {
   const responses = await Promise.allSettled(promises);
   return (
     <div>
-      {responses.map((response) => {
-        if (response.value.status === 200) {
+      {responses.map((response, index) => {
+        if (response.status === "rejected"){
+          return (
+            <>
+              <span>Remove file with path '{removePaths[index]}' failed. {response.reason.response.data.message}</span>
+              <br/>
+            </>)
+        }
+        if (response?.value?.status === 200) {
           return (
             <>
               <span>Remove file '{response.value?.data.name}' successfully.</span>
@@ -90,7 +97,7 @@ const rmCommandHandler = async (commandElement) => {
         } else {
           return (
             <>
-              <span>Remove file '{response.value?.data.name}' failed.</span>
+              <span>Remove file with path '{removePaths[index]}' failed.</span>
               <br/>
             </>)
         }
@@ -117,10 +124,6 @@ const parseCommand = (commandValue) => {
   const stack = [];
   for (let character of command) {
     if (character === " ") {
-      if (stack[0] === "/") {
-        stack.push(character);
-        continue;
-      }
       if (stack[0] === "'" || stack[0] === '"') {
         stack.push(character);
         continue;

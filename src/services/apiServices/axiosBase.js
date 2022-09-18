@@ -16,7 +16,7 @@ export const CallAPI = (
 
   return axios({
     method,
-    url: 'http://localhost:5000' + endpoint,
+    url: process.env.REACT_APP_API_URL + endpoint,
     headers,
     data: body,
     responseType,
