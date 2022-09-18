@@ -17,7 +17,7 @@ const UserManual = () => {
             <div>Example: /directory, /new directory/new file</div>
           </li>
           <li>
-            <div>To use space in side an arguments, surrounding it with "" or ''</div>
+            <div>To use space in side an argument, surrounding it with "" or ''</div>
             <div>Example: cat "/new file"</div>
           </li>
         </ul>
