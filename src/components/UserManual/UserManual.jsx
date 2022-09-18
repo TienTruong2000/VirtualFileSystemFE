@@ -9,8 +9,14 @@ const UserManual = () => {
       </div>
       <div className={'manual'}>
         <h3>User manual</h3>
-        <div>Type "help + Enter" to show list of available commands.</div>
-        <div>Press UP or DOWN to access previous/next command.</div>
+        <ul style={{marginLeft: '1rem'}}>
+          <li>Type "help + Enter" to show list of available commands.</li>
+          <li>Press UP or DOWN to access previous/next command.</li>
+          <li>
+            <div>The file path in this system is absolute path from the root path '/'.</div>
+            <div>Example: /directory, /new directory/new file</div>
+          </li>
+        </ul>
       </div>
       <div className={'footer'}>You can check the source code <a href={"#"}>here</a>.</div>
     </div>

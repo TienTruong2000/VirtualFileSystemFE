@@ -1,0 +1,103 @@
+{
+  "cr": {
+    "name": "cr",
+    "shortDescription": "Make a new file or a new directory",
+    "description": "Create a new file (if [data] is specified, otherwise create a new folder) at the specified <path>",
+    "options": [
+      {
+        "value": "p",
+        "description": "create the missing parent folders"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "path",
+        "description": "path when create file",
+        "isMultiple": false,
+        "optional": false
+      },
+      {
+        "name": "data",
+        "description": "if the 'data' is specified create new file",
+        "isMultiple": false,
+        "optional": true
+      }
+    ]
+  },
+  "cat": {
+    "name": "cat",
+    "shortDescription": "Show the content of a file at <path>'",
+    "description": "Show the content of a file at <path>. If there is no file at <path>, raise error",
+    "options": [],
+    "arguments": [
+      {
+        "name": "path",
+        "description": "file path",
+        "isMultiple": false,
+        "optional": false
+      }
+    ]
+  },
+  "ls": {
+    "name": "ls",
+    "shortDescription": "List out all items directly under a directory",
+    "description": "List out all items directly under a directory. \nThe output list includes name, created at, and size of each item directly under the current directory, \nand of the current directory itself. \nSize of a directory is the total size of all files within the directory. \nSize of a file is the number of characters in its data.",
+    "options": [],
+    "arguments": [
+      {
+        "name": "path",
+        "description": "file path",
+        "isMultiple": false,
+        "optional": false
+      }
+    ]
+  },
+  "mv": {
+    "name": "mv",
+    "shortDescription": "Move file to destination.",
+    "description": "Move a file/folder at <source path> into the destination <destination path>. Raise error if:",
+    "options": [],
+    "arguments": [
+      {
+        "name": "source path",
+        "description": "file or directory path that want to be moved",
+        "isMultiple": false,
+        "optional": false
+      },
+      {
+        "name": "destination path",
+        "description": "the destination path",
+        "isMultiple": false,
+        "optional": false
+      }
+    ]
+  },
+  "rm": {
+    "name": "rm",
+    "shortDescription": "Remove files or directories.",
+    "description": "Remove files/folders at the specified <path(s)>.",
+    "options": [],
+    "arguments": [
+      {
+        "name": "path(s)",
+        "description": "directory or file path(s)",
+        "isMultiple": true,
+        "optional": false
+      }
+    ]
+  },
+  "help": {
+    "name": "help",
+    "shortDescription": "Display syntax and description of supported commands",
+    "description": "Display syntax and description of supported commands",
+    "options": [],
+    "arguments": [
+      {
+        "name": "command",
+        "description": "command that you need to show documentation",
+        "isMultiple": false,
+        "optional": false
+      }
+    ]
+  }
+}

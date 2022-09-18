@@ -5,8 +5,11 @@ import React from "react";
 const LsResult = ({ data }) => {
   return (
     <div>
+      <pre style={{ color: "#7c7b18" }}>Directory info: </pre>
+      <pre>Created at: {moment(data.createdAt).format(DATE_FORMAT)}</pre>
       <pre>Size: {data.size}</pre>
       <pre>Type: {data.type}</pre>
+      <pre style={{ color: "#7c7b18" }}>List of children items: </pre>
       <table>
         <thead>
         <tr>

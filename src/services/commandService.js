@@ -1,6 +1,5 @@
 import React from "react";
 import { createDirectory, getDirectoryByPath } from "./apiServices/directoryService";
-import { commandDictionary, supportedCommand } from "../constants/commandDictionary";
 import { createTextFile, getTextFileByPath } from "./apiServices/textFileService";
 import { moveFile, removeFileFromPath } from "./apiServices/fileService";
 import CommandList from "../components/CommandList/CommandList";
@@ -90,10 +89,16 @@ const rmCommandHandler = async (commandElement) => {
   );
 }
 
-const helpCommandHandler = async (commandElement) => {
+const helpCommandHandler = async (commandElement, commandDictionary) => {
   const helpCommand = commandElement[1];
-  if (helpCommand === undefined)
-    return <CommandList/>;
+  if (helpCommand === undefined) {
+    let commandDefinition = commandDictionary.help;
+    return (<>
+      <CommandHelp commandDefinition={commandDefinition}/>
+      <CommandList/>
+    </>);
+  }
+
   const commandDefinition = commandDictionary[helpCommand];
   if (commandDefinition === undefined)
     return <span>This command is not supported by the help utility.</span>
@@ -155,8 +160,13 @@ export const parseCommand = (commandValue) => {
   return result.filter(ele => ele !== "");
 }
 
-const commandHandler = async (currentDirId, commandValue, additionalConsoleContents) => {
+const commandHandler = async (commandValue, additionalConsoleContents, commandDictionary) => {
+  debugger;
   const commandElements = parseCommand(commandValue);
+  const supportedCommand = Object.keys(commandDictionary).reduce((prev, cur) => {
+    prev[cur] = cur;
+    return prev;
+  }, {})
   if (commandElements === null || commandElements.length === 0) return;
   const command = commandElements[0];
   try {
@@ -178,7 +188,7 @@ const commandHandler = async (currentDirId, commandValue, additionalConsoleConte
         result = await rmCommandHandler(commandElements);
         break;
       case supportedCommand.help:
-        result = await helpCommandHandler(commandElements);
+        result = await helpCommandHandler(commandElements, commandDictionary);
         break;
       default:
         result = <span>'{command}' is not recognized as a valid command. Type 'help' to show list of commands.</span>;

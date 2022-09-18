@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ROOT_ID } from "../../constants/appConstants";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import useEventListener from "../../hooks/useEventListener";
 import commandHandler from "../../services/commandService";
+import CommandDictionaryContext from "../../contexts/CommandDictionaryContext";
 
 
 const ConsoleCommand = ({ dir, command }) => {
@@ -19,12 +19,13 @@ const ConsoleForm = ({ currentDirPath, onFormSubmit, onInputChange, inputRef, in
 const ConsoleView = () => {
 
   const [currentDir, setCurrentDir] = useState("/");
-  const [currentDirId, setCurrentDirId] = useState(ROOT_ID);
   const [consoleContents, setConsoleContents] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const commandListRef = useRef([]);
   const currentCommandRef = useRef();
   const inputRef = useRef();
+  const commandDictionary = useContext(CommandDictionaryContext);
+
 
   useEffect(() => {
     // Moving cursor to the end
@@ -67,7 +68,7 @@ const ConsoleView = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     const additionalConsoleContents = [<ConsoleCommand dir={currentDir} command={inputValue}/>]
-    await commandHandler(currentDirId, inputValue, additionalConsoleContents)
+    await commandHandler(inputValue, additionalConsoleContents, commandDictionary)
     setConsoleContents(prevState => {
       return [...prevState, ...additionalConsoleContents];
     });

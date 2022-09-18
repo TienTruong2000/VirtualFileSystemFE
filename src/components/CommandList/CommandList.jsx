@@ -1,10 +1,11 @@
-import { commandDictionary } from "../../constants/commandDictionary";
-import React from "react";
+import React, { useContext } from "react";
+import CommandDictionaryContext from "../../contexts/CommandDictionaryContext";
 
 const CommandList = () => {
+  const commandDictionary = useContext(CommandDictionaryContext);
   return (
     <div>
-      <pre>Commands: </pre>
+      <pre style={{ color: "#7c7b18" }}>List of supported commands: </pre>
       <div>
         {Object.keys(commandDictionary).map((command, index) => {
           return (
@@ -13,13 +14,13 @@ const CommandList = () => {
                 <pre>{command}</pre>
               </div>
               <div>
-                <pre>{commandDictionary[command].description}</pre>
+                <pre>{commandDictionary[command].shortDescription}</pre>
               </div>
             </div>
           )
         })}
       </div>
-      <br />
+      <br/>
     </div>
   )
 }
