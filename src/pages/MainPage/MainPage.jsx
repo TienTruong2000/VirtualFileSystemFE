@@ -13,10 +13,14 @@ const MainPage = () => {
   }, [])
 
   const fetchData = async () => {
-    const response = await fetch('commandDictionary.json');
-    const json = await response.json();
-    debugger;
-    setCommandDictionary(json);
+    try{
+      const response = await fetch('commandDictionary.json');
+      const json = await response.json();
+      setCommandDictionary(json);
+    } catch (e){
+      alert("Cannot fetch commands")
+    }
+
   }
 
   return (

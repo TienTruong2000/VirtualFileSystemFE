@@ -161,7 +161,6 @@ export const parseCommand = (commandValue) => {
 }
 
 const commandHandler = async (commandValue, additionalConsoleContents, commandDictionary) => {
-  debugger;
   const commandElements = parseCommand(commandValue);
   const supportedCommand = Object.keys(commandDictionary).reduce((prev, cur) => {
     prev[cur] = cur;
