@@ -117,8 +117,13 @@ const helpCommandHandler = async (commandElement) => {
     <CommandHelp commandDefinition={commandDefinition}/>
   )
 }
+const extractKeyWordFromStack = (stack) => {
+  const keyword = stack.join("").trim();
+  stack.splice(0, stack.length);
+  return keyword;
+}
 
-const parseCommand = (commandValue) => {
+export const parseCommand = (commandValue) => {
   const command = commandValue.trim();
   const result = [];
   const stack = [];
@@ -128,47 +133,42 @@ const parseCommand = (commandValue) => {
         stack.push(character);
         continue;
       }
-      const keyword = stack.join("");
-      if (keyword.trim().length !== 0) {
-        result.push(keyword);
-      }
-      stack.splice(0, stack.length);
+      const keyword = extractKeyWordFromStack(stack);
+      result.push(keyword);
       continue;
     }
     if (character === "'" && stack[0] === "'") {
-      const keyword = stack.join("");
-      if (keyword.trim().length !== 0) {
-        result.push(keyword.substring(1, keyword.length));
-      }
-      stack.splice(0, stack.length);
+      const keyword = extractKeyWordFromStack(stack);
+      //remove the first '
+      result.push(keyword.substring(1, keyword.length));
       continue;
     }
     if (character === '"' && stack[0] === '"') {
-      const keyword = stack.join("");
-      if (keyword.trim().length !== 0) {
-        result.push(keyword.substring(1, keyword.length));
-      }
-      stack.splice(0, stack.length);
+      const keyword = extractKeyWordFromStack(stack);
+      //remove the first "
+      result.push(keyword.substring(1, keyword.length));
       continue;
     }
     if (character === "/") {
       if (stack[stack.length - 1] !== " ") {
+        //Ex: /new/file
         stack.push(character);
         continue;
       }
-      const keyword = stack.join("");
-      if (keyword.trim().length !== 0) {
-        result.push(keyword.trim());
+      if (stack[0] === "'" || stack[0] === '"'){
+        //Ex: "/new /file"
+        stack.push(character);
+        continue;
       }
-      stack.splice(0, stack.length);
+      const keyword = extractKeyWordFromStack(stack);
+      result.push(keyword);
+      continue;
     }
     stack.push(character);
   }
-  const keyword = stack.join("");
-  if (keyword.trim().length !== 0) {
-    result.push(keyword.trim());
-  }
-  return result;
+  const keyword = extractKeyWordFromStack(stack);
+  result.push(keyword);
+  return result.filter(ele => ele !== "");
 }
 
 const commandHandler = async (currentDirId, commandValue, additionalConsoleContents) => {
