@@ -19,6 +19,7 @@ const CommandList = () => {
           )
         })}
       </div>
+      <br />
     </div>
   )
 }

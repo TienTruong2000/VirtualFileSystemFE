@@ -1,5 +1,3 @@
-import moment from "moment/moment";
-import { DATE_FORMAT } from "../constants/appConstants";
 import React from "react";
 import { createDirectory, getDirectoryByPath } from "./apiServices/directoryService";
 import { commandDictionary, supportedCommand } from "../constants/commandDictionary";
@@ -7,29 +5,15 @@ import { createTextFile, getTextFileByPath } from "./apiServices/textFileService
 import { moveFile, removeFileFromPath } from "./apiServices/fileService";
 import CommandList from "../components/CommandList/CommandList";
 import CommandHelp from "../components/CommandHelp/CommandHelp";
+import LsResult from "../components/LsResult/LsResult";
 
 const lsCommandHandler = async (commandElements) => {
-  const fileType = {
-    REGULAR_FILE: "-",
-    DIRECTORY: "d",
-    ROOT: "d"
-  }
   const path = commandElements.slice(1).join(" ");
   if (path === undefined) {
     return (<span>The syntax of the command is incorrect. Type 'help cr' command usage.</span>);
   }
   const { data } = await getDirectoryByPath(path);
-  return (<div>
-    <pre>Size: {data.size}</pre>
-    <pre>Type: {data.type}</pre>
-    {data.children?.map(child => {
-      return <pre key={child.id}>
-              {moment(child.createdAt).format(DATE_FORMAT)} {fileType[child.type]} {child.size} {child.name}
-            </pre>
-    })
-    }
-    <br/>
-  </div>);
+  return (<LsResult data={data}/>);
 }
 
 const crCommandHandler = async (commandElements) => {
@@ -80,7 +64,7 @@ const rmCommandHandler = async (commandElement) => {
   return (
     <div>
       {responses.map((response, index) => {
-        if (response.status === "rejected"){
+        if (response.status === "rejected") {
           return (
             <>
               <span>Remove file with path '{removePaths[index]}' failed. {response.reason.response.data.message}</span>
@@ -155,7 +139,7 @@ export const parseCommand = (commandValue) => {
         stack.push(character);
         continue;
       }
-      if (stack[0] === "'" || stack[0] === '"'){
+      if (stack[0] === "'" || stack[0] === '"') {
         //Ex: "/new /file"
         stack.push(character);
         continue;

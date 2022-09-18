@@ -10,6 +10,26 @@
   border: 2px solid green;
   margin-right: 1rem;
   padding: 1rem;
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    h3, h6{
+      text-align: center;
+    }
+  }
+
+  .manual{
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  .footer{
+    font-size: 1rem;
+    margin-top: auto;
+  }
+
+
 }
 
 .console-view {

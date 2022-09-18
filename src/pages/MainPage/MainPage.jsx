@@ -1,6 +1,6 @@
 import React from 'react';
 import './MainPage.styles.scss';
-import DirectoryTree from "../../components/DirectoryTree/DirectoryTree";
+import UserManual from "../../components/UserManual/UserManual";
 import ConsoleView from "../../components/ConsoleView/ConsoleView";
 
 
@@ -9,7 +9,7 @@ const MainPage = () => {
 
   return (
     <div className={'main-page'}>
-      <DirectoryTree/>
+      <UserManual/>
       <ConsoleView/>
     </div>
   );
