@@ -36,7 +36,7 @@
   "ls": {
     "name": "ls",
     "shortDescription": "List out all items directly under a directory",
-    "description": "List out all items directly under a directory. \nThe output list includes name, created at, and size of each item directly under the current directory, \nand of the current directory itself. \nSize of a directory is the total size of all files within the directory. \nSize of a file is the number of characters in its data.",
+    "description": "List out all items directly under a directory. \nThe output list includes name, created at, and size of each item directly under the current directory, \nand of the current directory itself. \nSize of a directory is the total size of all files within the directory. \nSize of a file is the number of characters in its data. \nThere are 3 file types: file text (-), directory (d), root (r). ",
     "options": [],
     "arguments": [
       {

@@ -9,12 +9,16 @@ const UserManual = () => {
       </div>
       <div className={'manual'}>
         <h3>User manual</h3>
-        <ul style={{marginLeft: '1rem'}}>
+        <ul style={{ marginLeft: '1rem' }}>
           <li>Type "help + Enter" to show list of available commands.</li>
           <li>Press UP or DOWN to access previous/next command.</li>
           <li>
             <div>The file path in this system is absolute path from the root path '/'.</div>
             <div>Example: /directory, /new directory/new file</div>
+          </li>
+          <li>
+            <div>To use space in side an arguments, surrounding it with "" or ''</div>
+            <div>Example: cat "/new file"</div>
           </li>
         </ul>
       </div>
