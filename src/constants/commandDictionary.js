@@ -29,6 +29,7 @@ export const supportedCommand = {
   ls: 'ls',
   cr: 'cr',
   cat: 'cat',
-  mv: 'mv'
+  mv: 'mv',
+  rm: 'rm'
 }
 

@@ -1,10 +1,10 @@
 import moment from "moment/moment";
 import { DATE_FORMAT } from "../constants/appConstants";
 import React from "react";
-import { createDirectory, getDirectoryById, getDirectoryByPath } from "./apiServices/directoryService";
+import { createDirectory, getDirectoryByPath } from "./apiServices/directoryService";
 import { supportedCommand } from "../constants/commandDictionary";
 import { createTextFile, getTextFileByPath } from "./apiServices/textFileService";
-import { moveFile } from "./apiServices/fileService";
+import { moveFile, removeFileFromPath } from "./apiServices/fileService";
 
 const lsCommandHandler = async (commandElements) => {
   const fileType = {
@@ -69,17 +69,45 @@ const mvCommandHandler = async (commandElement) => {
   return (<span>Move file '{data.name}' to {destinationPath} successfully.</span>);
 }
 
+const rmCommandHandler = async (commandElement) => {
+  const removePaths = commandElement.slice(1).filter(path => path !== "");
+  if (removePaths.length === 0)
+    return (<span>The syntax of the command is incorrect. Type 'help rm' for command usage.</span>);
+  const promises = removePaths.map(path => removeFileFromPath(path));
+  const responses = await Promise.allSettled(promises);
+  return (
+    <div>
+      {responses.map((response) => {
+        if (response.value.status === 200) {
+          return (
+            <>
+              <span>Remove file '{response.value?.data.name}' successfully.</span>
+              <br/>
+            </>
+          )
+        } else {
+          return (
+            <>
+              <span>Remove file '{response.value?.data.name}' failed.</span>
+              <br/>
+            </>)
+        }
+      })}
+    </div>
+  );
+}
+
 const parseCommand = (commandValue) => {
   const command = commandValue.trim();
   const result = [];
   const stack = [];
   for (let character of command) {
     if (character === " ") {
-      if (stack[0] === "/"){
+      if (stack[0] === "/") {
         stack.push(character);
         continue;
       }
-      if (stack[0] === "'" || stack[0] === '"'){
+      if (stack[0] === "'" || stack[0] === '"') {
         stack.push(character);
         continue;
       }
@@ -106,7 +134,7 @@ const parseCommand = (commandValue) => {
       stack.splice(0, stack.length);
       continue;
     }
-    if (character === "/"){
+    if (character === "/") {
       if (stack[stack.length - 1] !== " ") {
         stack.push(character);
         continue;
@@ -128,7 +156,6 @@ const parseCommand = (commandValue) => {
 
 const commandHandler = async (currentDirId, commandValue, additionalConsoleContents) => {
   const commandElements = parseCommand(commandValue);
-  debugger;
   if (commandElements === null || commandElements.length === 0) return;
   const command = commandElements[0];
   try {
@@ -145,6 +172,9 @@ const commandHandler = async (currentDirId, commandValue, additionalConsoleConte
         break;
       case supportedCommand.mv:
         result = await mvCommandHandler(commandElements);
+        break;
+      case supportedCommand.rm:
+        result = await rmCommandHandler(commandElements);
         break;
       default:
         result = <span>'{command}' is not recognized as a valid command. Type 'help' to show list of commands.</span>;
