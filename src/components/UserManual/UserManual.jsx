@@ -22,7 +22,7 @@ const UserManual = () => {
           </li>
         </ul>
       </div>
-      <div className={'footer'}>You can check the source code <a href={"#"}>here</a>.</div>
+      <div className={'footer'}>You can check the documentation <a href={"https://modern-bandicoot-659.notion.site/Virtual-file-system-with-CLI-70f8136e6cbd417cb888fa2966267a05"}>here</a>.</div>
     </div>
   )
 }
