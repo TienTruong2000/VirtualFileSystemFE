@@ -1,12 +1,12 @@
 import './App.css';
-import ErrorHandlerComponent from "./components/ErrorHandler/ErrorHandler";
+import ErrorHandler from "./components/ErrorHandler/ErrorHandler.component";
 import MainPage from "./pages/MainPage/MainPage";
 
 function App() {
   return (
-    <ErrorHandlerComponent>
+    <ErrorHandler>
       <MainPage/>
-    </ErrorHandlerComponent>
+    </ErrorHandler>
   );
 }
 

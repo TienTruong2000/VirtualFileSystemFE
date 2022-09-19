@@ -2,9 +2,9 @@ import React from "react";
 import { createDirectory, getDirectoryByPath } from "./apiServices/directoryService";
 import { createTextFile, getTextFileByPath } from "./apiServices/textFileService";
 import { moveFile, removeFileFromPath } from "./apiServices/fileService";
-import CommandList from "../components/CommandList/CommandList";
-import CommandHelp from "../components/CommandHelp/CommandHelp";
-import LsResult from "../components/LsResult/LsResult";
+import CommandList from "../components/CommandList/CommandList.component";
+import CommandHelp from "../components/CommandHelp/CommandHelp.component";
+import LsResult from "../components/LsResult/LsResult.component";
 
 const lsCommandHandler = async (commandElements) => {
   const path = commandElements.slice(1).join(" ");
@@ -25,39 +25,73 @@ const crCommandHandler = async (commandElements) => {
   if (fileData === undefined) {
     const res = await createDirectory(path);
     data = res.data;
-    return (<span>Create directory with name '{data.name}' successfully.</span>);
+    return (<>
+      <span>
+        <pre>Create directory with name '{data.name}' successfully.</pre>
+      </span>
+      <br/>
+    </>);
   }
   const res = await createTextFile(path, fileData);
   data = res.data;
-  return (<span>Create file with name '{data.name}' successfully.</span>);
-
+  return (<>
+      <span>
+        <pre>Create file with name '{data.name}' successfully.</pre>
+      </span>
+    <br/>
+  </>);
 }
 
 const catCommandHandler = async (commandElements) => {
   const path = commandElements.slice(1).join(" ");
   if (path === undefined) {
-    return (<span>The syntax of the command is incorrect. Type 'help cat' for command usage.</span>);
+    return (<>
+      <span>
+        <pre>The syntax of the command is incorrect. Type 'help cat' for command usage.</pre>
+      </span>
+      <br/>
+    </>);
   }
   const res = await getTextFileByPath(path);
   const data = res.data;
-  return (<span>{data.content}</span>);
+  return (<>
+      <span>
+        <pre>{data.content}</pre>
+      </span>
+    <br/>
+  </>)
 }
 
 const mvCommandHandler = async (commandElement) => {
   const sourcePath = commandElement[1];
   const destinationPath = commandElement[2];
   if (sourcePath === undefined || destinationPath === undefined) {
-    return (<span>The syntax of the command is incorrect. Type 'help mv' for command usage.</span>);
+    return (<>
+      <span>
+        <pre>The syntax of the command is incorrect. Type 'help mv' for command usage.</pre>
+      </span>
+      <br/>
+    </>);
   }
   const res = await moveFile(sourcePath, destinationPath);
   const data = res.data;
-  return (<span>Move file '{data.name}' to {destinationPath} successfully.</span>);
+  return (<>
+      <span>
+        <pre>Move file '{data.name}' to {destinationPath} successfully.</pre>
+      </span>
+    <br/>
+  </>);
 }
 
 const rmCommandHandler = async (commandElement) => {
   const removePaths = commandElement.slice(1).filter(path => path !== "");
   if (removePaths.length === 0)
-    return (<span>The syntax of the command is incorrect. Type 'help rm' for command usage.</span>);
+    return (<>
+      <span>
+        <pre>The syntax of the command is incorrect. Type 'help rm' for command usage.</pre>
+      </span>
+      <br/>
+    </>);
   const promises = removePaths.map(path => removeFileFromPath(path));
   const responses = await Promise.allSettled(promises);
   return (
@@ -66,21 +100,27 @@ const rmCommandHandler = async (commandElement) => {
         if (response.status === "rejected") {
           return (
             <>
-              <span>Remove file with path '{removePaths[index]}' failed. {response.reason.response.data.message}</span>
+              <span>
+                <pre>
+                  Remove file with path '{removePaths[index]}' failed. {response.reason.response.data.message}
+                </pre>
+              </span>
               <br/>
             </>)
         }
         if (response?.value?.status === 200) {
           return (
             <>
-              <span>Remove file '{response.value?.data.name}' successfully.</span>
+              <span>
+                <pre> Remove file '{response.value?.data.name}' successfully. </pre>
+              </span>
               <br/>
             </>
           )
         } else {
           return (
             <>
-              <span>Remove file with path '{removePaths[index]}' failed.</span>
+              <span><pre>Remove file with path '{removePaths[index]}' failed.</pre></span>
               <br/>
             </>)
         }
@@ -101,7 +141,12 @@ const helpCommandHandler = async (commandElement, commandDictionary) => {
 
   const commandDefinition = commandDictionary[helpCommand];
   if (commandDefinition === undefined)
-    return <span>This command is not supported by the help utility.</span>
+    return (<>
+      <span>
+        <pre>This command is not supported by the help utility.</pre>
+      </span>
+      <br/>
+    </>);
   return (
     <CommandHelp commandDefinition={commandDefinition}/>
   )

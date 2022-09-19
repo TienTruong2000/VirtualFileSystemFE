@@ -68,7 +68,7 @@ describe('Test parse cat command', () => {
     const actual = parseCommand(command);
     expect(compareArray(expected, actual)).toBe(true)
   });
-  test('cat /new file', () => {
+    test('cat /new file', () => {
     const command = 'cat /new file';
     const expected = ["cat", "/new", "file"];
     const actual = parseCommand(command);

@@ -2,21 +2,10 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import useEventListener from "../../hooks/useEventListener";
 import commandHandler from "../../services/commandService";
 import CommandDictionaryContext from "../../contexts/CommandDictionaryContext";
+import ConsoleCommand from "../../components/ConsoleCommand/ConsoleCommand.component";
+import ConsoleView from "../../components/ConsoleView/ConsoleView.component";
 
-
-const ConsoleCommand = ({ dir, command }) => {
-  return (<span className={'command'}><span>{dir}></span>{command}</span>)
-}
-
-const ConsoleForm = ({ currentDirPath, onFormSubmit, onInputChange, inputRef, inputValue }) => {
-  return (<form onSubmit={onFormSubmit}>
-    {currentDirPath}><input ref={inputRef} autoFocus={true} onChange={onInputChange}
-                            type='text'
-                            value={inputValue}/>
-  </form>)
-}
-
-const ConsoleView = () => {
+const ConsoleViewContainer = () => {
 
   const [currentDir, setCurrentDir] = useState("/");
   const [consoleContents, setConsoleContents] = useState([]);
@@ -88,15 +77,11 @@ const ConsoleView = () => {
     }
   }
 
-  return (<div className={'console-view'} onClick={onClick}>
-    {consoleContents.map((command, index) => {
-      return <div key={index}>{command}</div>
-    })}
-    <ConsoleForm inputRef={inputRef} inputValue={inputValue} onFormSubmit={onSubmit} onInputChange={onChange}
-                 currentDirPath={currentDir}/>
-  </div>)
+  const viewProps = { onClick, consoleContents, inputRef, inputValue, onSubmit, onChange, currentDir };
+
+  return <ConsoleView {...viewProps}/>
 
 
 }
 
-export default ConsoleView;
+export default ConsoleViewContainer;

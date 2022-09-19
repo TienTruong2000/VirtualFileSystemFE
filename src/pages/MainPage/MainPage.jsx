@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MainPage.styles.scss';
-import UserManual from "../../components/UserManual/UserManual";
-import ConsoleView from "../../components/ConsoleView/ConsoleView";
+import UserManual from "../../components/UserManual/UserManual.component";
+import ConsoleView from "../../containers/ConsoleContainer/Console.container";
 import { CommandDictionaryProvider } from "../../contexts/CommandDictionaryContext";
 
 

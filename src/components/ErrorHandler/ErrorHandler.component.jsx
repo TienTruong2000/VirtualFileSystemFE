@@ -1,5 +1,5 @@
 import React from 'react';
-class ErrorHandlerComponent extends React.Component {
+class ErrorHandler extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -17,4 +17,4 @@ class ErrorHandlerComponent extends React.Component {
   }
 }
 
-export default ErrorHandlerComponent;
+export default ErrorHandler;
